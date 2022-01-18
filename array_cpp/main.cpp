@@ -13,6 +13,7 @@ public:
     element_type access(size_type index);
     void insert(size_type index, element_type value);
     void modify(size_type index, element_type value);
+    void remove(size_type index);
 
 private:
 	element_type* m_start;
@@ -63,6 +64,24 @@ void array::modify(size_type index, element_type value)
 	m_start[index] = value;	
 }
 
+void array::remove(size_type index)
+{
+	assert(index >= 0);
+	assert(index < m_size);
+	m_size = m_size - 1;
+	element_type* tmp = new element_type[m_size];
+	for (size_type i = 0; i < index; ++i) {
+		tmp[i] = m_start[i];
+	}
+	for (size_type i = index - 1; i < m_size; ++i) {
+		tmp[i] = m_start[i + 1];
+	}
+	if (m_start != nullptr) {
+		delete [] m_start;
+	}
+	m_start = tmp;
+}
+
 void array::insert(size_type index, element_type value)
 {
 	assert(index >= 0);
@@ -96,83 +115,67 @@ array::element_type array::access(array::size_type index)
 	return m_start[index];
 }
 
-void test_1()
+void test_create_empty()
 {
-    array a(4, 0);
-    assert(a.size() == 4);
-    assert(! a.empty());
-    assert(a.access(0) == 0);
-    assert(a.access(1) == 0);
-    assert(a.access(2) == 0);
-    assert(a.access(3) == 0);
-	a.insert(a.size(), 8);
-	a.insert(a.size(), 9);
-    assert(a.size() == 6);
-    assert(a.access(0) == 0);
-    assert(a.access(1) == 0);
-    assert(a.access(2) == 0);
-    assert(a.access(3) == 0);
-    assert(a.access(4) == 8);
-    assert(a.access(5) == 9);
-	a.insert(0, 5);
-    assert(a.size() == 7);
-    assert(a.access(0) == 5);
-    assert(a.access(1) == 0);
-    assert(a.access(2) == 0);
-    assert(a.access(3) == 0);
-    assert(a.access(4) == 0);
-    assert(a.access(5) == 8);
-    assert(a.access(6) == 9);
-	a.insert(5, 15);
-    assert(a.size() == 8);
-    assert(a.access(0) == 5);
-    assert(a.access(1) == 0);
-    assert(a.access(2) == 0);
-    assert(a.access(3) == 0);
-    assert(a.access(4) == 0);
-    assert(a.access(5) == 15);
-    assert(a.access(6) == 8);
-    assert(a.access(7) == 9);
-	for (array::size_type i = 0; i < a.size(); ++i)  {
-        std::cout << "a[" << i << "]" << a.access(i) << std::endl;
+	array sample;
+	assert(sample.size() == 0 && "TEST test_create_empty: FAILED");
+	assert(sample.empty() && "TEST test_create_empty: FAILED");
+	std::cout << "TEST test_create_empty: PASSED" << std::endl;
+}
+
+void test_create()
+{
+	array sample(5,0);
+	assert(sample.size() != 0 && "TEST test_create: FAILED");
+	assert(!sample.empty() && "TEST test_create: FAILED");
+	for (array::size_type i = 0; i < sample.size(); ++i)  {
+       		assert( 0 == sample.access(i) && "TEST test_create: FAILED");
 	}
+	std::cout << "TEST test_create: PASSED" << std::endl;
 }
 
-void test_2()
+void test_insert()
 {
-	array b;
-    assert(b.size() == 0);
-    assert(b.empty());
+	array sample(5,0);
+	array::size_type old_size = sample.size();
+	sample.insert(2,10);
+	array::size_type new_size = sample.size();
+	assert( new_size == old_size + 1 && "TEST test_insert: FAILED");
+	assert( sample.access(2) == 10 && "TEST test_insert: FAILED");
+	std::cout << "TEST test_insert: PASSED" << std::endl;
 }
 
-void test_3()
+void test_modify()
 {
-	array* c = new array(5, 8);
-    assert(c->size() == 5);
-    assert((*c).size() == 5);
-    assert(! c->empty());
-	delete c;
+	array sample(4,0);
+	array::element_type old_value = sample.access(2);
+	sample.modify(2,10);
+	array::element_type new_value = sample.access(2);
+	assert(new_value != old_value && "TEST test_modify: FAILED");
+	assert(10 == new_value && "TEST test_modify: FAILED");
+	std::cout << "TEST test_modify: PASSED" << std::endl;
 }
 
-void test_4()
+void test_remove()
 {
-	array* d = new array[5];
-    assert(d[0].size() == 0);
-    assert(d[1].size() == 0);
-    assert(d[2].size() == 0);
-    assert(d[3].size() == 0);
-    assert(d[4].size() == 0);
-    for (int i = 0; i < 5; ++i) {
-        assert(d[i].empty());
-    }
-	delete [] d;
+	array sample(10,1);
+	for (array::size_type i = 0; i < sample.size(); ++i) sample.modify(i,2*i);
+	array::element_type preremoved_value = sample.access(4);
+	array::size_type preremoved_size = sample.size();
+	sample.remove(4);
+	array::size_type after_remove_size = sample.size();
+	array::element_type after_remove_value = sample.access(4);
+	assert( after_remove_size + 1 == preremoved_size && "TEST test_remove: FAILED" );
+	assert( after_remove_value != preremoved_value && "TEST test_remove: FAILED" );
+	std::cout << "TEST test_remove: PASSED" << std::endl;
 }
 
 int main()
 {
-    test_1();
-    test_2();
-    test_3();
-    test_4();
+	test_create_empty();
+	test_create();
+	test_insert();
+	test_modify();
+	test_remove();
 	return 0;
 }
