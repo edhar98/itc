@@ -74,7 +74,7 @@ void array_remove(array* a, element_type index){
 	for (size_type i = 0; i < index; ++i) {
 		tmp[i] = a->start[i];
 	}
-	for (size_type i = index - 1; i < a->size; ++i) {
+	for (size_type i = index; i < a->size; ++i) {
 		tmp[i] = a->start[i + 1];
 	}
 	free(a->start);
@@ -126,7 +126,7 @@ int main()
 	assert(array_access(a, 4) == 0);
 	assert(array_access(a, 5) == 8);
 	assert(array_access(a, 6) == 9);
-	array_remove(a, 2);
+	array_remove(a, 5);
 	array_modify(a,1,13);	
 	for (size_type i = 0; i < a->size; ++i)  {
 		printf("a[%d] = %d\n", i, array_access(a, i));
