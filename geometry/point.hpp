@@ -1,84 +1,29 @@
-#include <cmath>
-#define PI 3.14159265
-
-point::point()
+#ifndef POINT_HPP
+#define POINT_HPP
+class point
 {
-	std::cout << "DefConstructor" << std::endl;
-	m_x = 0;
-	m_y = 0;
-	m_dist = 0;
-}
+public:
+	typedef float c_type;
+	typedef float dist_type;
+private:
+	c_type m_x;
+	c_type m_y;
+	dist_type m_dist;
 
-point::point(c_type n)
-{
-	std::cout << "Const 1" << std::endl;
-	m_x = n;
-	m_y = n;
-	m_dist = n * sqrt(2);
-}
+public:
+	point();
+	point(const c_type& n);
+	point(const c_type& x, const c_type& y);
+	const point& operator=(const point& p);
+	const bool operator==(const point& p) const;
+	dist_type dist() const;
+	dist_type dist_from(const point& p) const;
+	dist_type angle_x() const;
+	dist_type angle_y() const;
+	c_type get_x() const;
+	c_type get_y() const;
+	void set_x(const c_type& x);
+	void set_y(const c_type& y);
 
-point::point(c_type x, c_type y)
-{
-	std::cout << "Const 2" << std::endl;
-	m_x = x;
-	m_y = y;
-	m_dist = sqrt(x*x + y*y);
-}
-
-point::~point()
-{
-}
-
-const point& point::operator=(const point& p)
-{
-	m_x = p.get_x();
-	m_y = p.get_y();
-	m_dist = p.dist();
-	return *this;
-}
-
-point::dist_type point::dist() const
-{
-	return m_dist;
-}
-
-point::c_type point::get_x() const
-{
-	return m_x;
-}
-
-point::c_type point::get_y() const
-{
-	return m_y;
-}
-
-void point::set_x(const point::c_type& x)
-{
-	m_x = x;
-}
-
-void point::set_y(const point::c_type& y)
-{
-	m_y = y;
-}
-
-point::dist_type point::dist_from(const point& p) const
-{
-	return sqrt(pow(p.get_x()-m_x,2)+pow(p.get_y()-m_y,2));
-}
-
-point::dist_type point::angle_x() const
-{
-	if ( m_x != 0 ){
-		return atan(m_y/m_x) * 180/PI;
-	} 
-	return PI/2;
-}
-
-point::dist_type point::angle_y() const
-{
-	if ( m_y != 0 ){
-		return atan(m_x/m_y) * 180/PI;
-	}
-	return PI/2;
-}
+};
+#endif

@@ -1,19 +1,26 @@
 #include <iostream>
-#include "point.h"
 #include "point.hpp"
-#include "line.cpp"
+#include "line.hpp"
+#include <cmath>
+#include <cassert>
+#include "test_point.h"
+#include "test_line.h"
+
 
 int main(){
-	point A;
-	point B(1);
-	point C(3,2);
-	std::cout << A.get_x() << ", " << A.get_y() << std::endl;
-	A.set_x(10);
-	A.set_y(15);
-	std::cout << A.get_x() << ", " << A.get_y() << std::endl;
-	std::cout << B.get_x() << ", " << B.get_y() << std::endl;
-	std::cout << C.get_x() << ", " << C.get_y() << std::endl;
-	std::cout << B.dist() << ", " << B.dist_from(C)<< ", "<< B.angle_x() << ", " << B.angle_y() << std::endl;
-	std::cout << C.dist() << ", " << C.angle_x() << ", " <<C.angle_y() << std::endl;
+	test_empty_point();
+	test_single_argument_point();
+	test_double_argument_point();
+	test_point_assignment();
+	test_point_distance();
+	test_point_distance_from_another_point();
+	test_point_angle_with_x();
+	test_point_angle_with_y();
+	
+	test_zero_line();
+	test_single_argument_line();
+	test_double_argument_line();
+	test_line_assignment();
+	test_line_params();
 	return 0;
 }
