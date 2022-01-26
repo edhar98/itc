@@ -1,6 +1,7 @@
 #include "point.hpp"
 #include <cmath>
 #define delta 10000
+#define epsilion 0.00001
 #define PI 3.141592
 
 const point& point::operator=(const point& p)
@@ -13,7 +14,7 @@ const point& point::operator=(const point& p)
 
 const bool point::operator==(const point& p) const
 {
-	if (m_x == p.get_x() &&	m_y == p.get_y()){
+	if ((m_x - p.get_x()) < epsilion && (m_y - p.get_y()) < epsilion){
 		return true;
 	}
 	return false;

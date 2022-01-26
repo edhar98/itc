@@ -5,6 +5,8 @@ void test_zero_line()
 	assert(zero_line.slope() == 0 && "TEST zero line: FAILED");
 	assert(zero_line.dist() == 0 && "TEST zero line: FAILED");
 	assert((zero_line.get_one() == zero_line.get_two()) && "TEST zero line: FAILED");
+	assert((zero_line.angle_x() == 0) && "TEST zero line: FAILED");
+	assert((zero_line.angle_y() == 90) && "TEST zero line: FAILED");
 	std::cout << "TEST zero line: PASSED" << std::endl;
 }
 
@@ -17,6 +19,8 @@ void test_single_argument_line()
 	assert(sample_line.get_two() == sample_point && "TEST single argument line: FAILED");
 	assert(sample_line.intercept() == 0 && "TEST single argument line: FAILED");
 	assert(sample_line.slope() == sample_point.get_y()/sample_point.get_x() && "TEST single argument line: FAILED");
+	assert(sample_line.angle_x() == 45 && "TEST single argument line: FAILED");
+	assert(sample_line.angle_y() == 45 && "TEST single argument line: FAILED");
 	assert(sample_line.dist() == sample_point.dist() && "TEST single argument line: FAILED");
 	std::cout << "TEST single argument line: PASSED" << std::endl;
 }
